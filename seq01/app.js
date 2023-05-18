@@ -50,15 +50,15 @@ const { User, Todo, sequelize } = require("./models");
 // })
 
 //  เอาแค่ Title กับ status  ออกมา
-User.findAll({
-    where : { id : 3},
-    attributes: ['name'],
-    include : {
-        model : Todo,
-        attributes: ['title', 'status']
-    }
-}).then(rs=> {
-    console.log(JSON.stringify(rs,null,2))
+// User.findAll({
+//     where : { id : 3},
+//     attributes: ['id', 'name'],
+//     include : {
+//         model : Todo,
+//         attributes: ['title', 'status']
+//     }
+// }).then(rs=> {
+//     console.log(JSON.stringify(rs,null,2))
   //  [ "title": "Practice Git","status": false]
     // console.log(rs[0].Todos[0].title) // เอาแค่ title ตัวที่ 0 มา [Practice Git]
     
@@ -67,8 +67,17 @@ User.findAll({
     // console.log(JSON.stringify(rs[0].Todos, null, 2))
     // let output = rs[0].Todos.map(el => el.title)
     // console.log(output)
+// })
+
+// เรียกเฉพาะ ID และ แปลง upper case ก่อน ที่ Model
+// User.findByPk(2).then(rs => {
+//     console.log(JSON.stringify(rs.name, null, 2))
+//     console.log(rs.getDataValue('name'))
+// })
+
+
+Todo.findByPk(2).then( rs => {
+    console.log(JSON.stringify(rs, null, 2))
 })
-
-
 
 

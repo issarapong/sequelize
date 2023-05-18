@@ -23,11 +23,16 @@ const User = sequelize.define('User', {
         
         // Add Getter  // แปลงข้อมูลก่อนส่ง ตัวอย่างคือทำ Name toUpperCase() เป็นตัวใหญ่ทั้งหมด หลัง add ให้ sync alter
    
-              get() {
+            //   get() {
+            //     const rawValue = this.getDataValue('name');
+            //     return rawValue ? rawValue.toUpperCase() : null;
+            //   }
+            get() {
                 const rawValue = this.getDataValue('name');
                 return rawValue ? rawValue.toUpperCase() : null;
               }
-     
+
+              // restruct again
 
 
 
@@ -66,6 +71,18 @@ const Todo = sequelize.define('Todo',{
     type: DataTypes.DATEONLY,
     allowNull:false
     },
+ // Virtuals fields   // ไม่ต้อง sync  // ตัวอย่างเรียกใช้  79 -80
+     inSevenDay: {
+        type: DataTypes.VIRTUAL,
+        get() {
+            let sevenDay = new Date(this.dueDate);
+            sevenDay.setDate(sevenDay.getDate()+7)
+            return sevenDay
+        }
+     },
+
+
+
 status : { 
       type: DataTypes.BOOLEAN,
       allowNull:false,
