@@ -58,13 +58,17 @@ User.findAll({
         attributes: ['title', 'status']
     }
 }).then(rs=> {
-    //console.log(JSON.stringify(rs,null,2))
+    console.log(JSON.stringify(rs,null,2))
   //  [ "title": "Practice Git","status": false]
     // console.log(rs[0].Todos[0].title) // เอาแค่ title ตัวที่ 0 มา [Practice Git]
-    console.log(JSON.stringify(rs[0].Todos, null, 2))
-    let output = rs[0].Todos.map(el => el.title)
-    console.log(output)
+    
+    
+    // ทำ output ออก เป็น JSON ให้ Frontend พร้อมใช้
+    // console.log(JSON.stringify(rs[0].Todos, null, 2))
+    // let output = rs[0].Todos.map(el => el.title)
+    // console.log(output)
 })
+
 
 
 

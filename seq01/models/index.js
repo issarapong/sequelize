@@ -19,7 +19,19 @@ const User = sequelize.define('User', {
         validate:{               // Add validate 
             isAlpha: true,
             len: [2,5]
-        }        
+        },       
+        
+        // Add Getter  // แปลงข้อมูลก่อนส่ง ตัวอย่างคือทำ Name toUpperCase() เป็นตัวใหญ่ทั้งหมด หลัง add ให้ sync alter
+   
+              get() {
+                const rawValue = this.getDataValue('name');
+                return rawValue ? rawValue.toUpperCase() : null;
+              }
+     
+
+
+
+
     },
     password:{
         type: DataTypes.STRING(25),
@@ -78,7 +90,7 @@ status : {
         onUpdate: 'Restrict' 
     })
 
-
+// command sync เปิดแล้วอย่าลืมปิด
 //sequelize.sync({force:true})
 // sequelize.sync({alter:true})
 //    User.sync({force:true})
