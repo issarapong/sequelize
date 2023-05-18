@@ -1,11 +1,41 @@
 // Sync DB  after add models/Todo.js 
-const {sequelize} = require('./models')
+//const {sequelize, Todo, User} = require('./models') 
 
-sequelize.sync({force:true})  // คำสั่งเต็มอยู๋ใน  models/index.js 
+//sequelize.sync({force:true})  // คำสั่งเต็มอยู๋ใน  models/index.js 
 
 
-//const {Todo} = require('./models')   //index.js  จะหา ไฟลล์ model ให้อัตืโนมัติ
 
-//console.log(db)
+// Mockup data  ยย้ายไป  dbSync.js
+// sequelize 
+//   .sync({ force: true })
+//   .then(() => {
+//     return User.bulkCreate([
+//       { name: "Andy", password: "1234" },
+//       { name: "Bobby", password: "1234" },
+//       { name: "Candy", password: "1234" },
+//       { name: "Danny", password: "1234" },
+//       { name: "Eddy", password: "1234" },
+//     ]);
+//   })
+//   .then(() => {
+//     return Todo.bulkCreate([
+//       { title: "Learn HTML", dueDate: "2023-05-19", userId: 1 },
+//       { title: "Learn CSS", dueDate: new Date("2023-05-21"), userId: 1 },
+//       { title: "Learn Javascript", dueDate: new Date("2023-05-25"), userId: 2 },
+//       { title: "Practice Git", dueDate: new Date("2023-05-30"), userId: 3 },
+//       {
+//         title: "Read mySQL Manual",
+//         dueDate: new Date("2023-06-02"),
+//         userId: 3,
+//       },
+//       { title: "Review Docker", dueDate: "2023-06-10", userId: 4 },
+//     ]);
+//   })
+//   .catch((err) => console.log(err.message));
 
-//Todo.findByPk(2).then(  rs => console.log(rs))
+
+// เริ่ม query
+const  {sequelize, Todo, User} = require('./models')   //index.js  จะหา ไฟลล์ model ให้อัตืโนมัติ
+
+
+Todo.findAll()

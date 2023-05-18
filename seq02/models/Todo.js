@@ -33,5 +33,14 @@ module.exports = (sequelize, DataTypes) => {
         }
       );
 
+Todo.associate = (db) => {
+  Todo.belongsTo(db.User, {
+    foreignKey: 'userId',
+    onDelete: 'Restrict',
+    onUpdate: 'Restrict' 
+})
+}
+
+
       return Todo
 }
