@@ -1,41 +1,34 @@
-// Sync DB  after add models/Todo.js 
-//const {sequelize, Todo, User} = require('./models') 
+require('dotenv').config()
+const express = require('express')
+const notfound =require('./middlewares/notFound')
+const error =  require('./middlewares/error')
+const todoRoute = require('./routes/todoRoute')
+const authRoute = require('./routes/authRoute')
+const app = express()
 
-//sequelize.sync({force:true})  // คำสั่งเต็มอยู๋ใน  models/index.js 
-
-
-
-// Mockup data  ยย้ายไป  dbSync.js
-// sequelize 
-//   .sync({ force: true })
-//   .then(() => {
-//     return User.bulkCreate([
-//       { name: "Andy", password: "1234" },
-//       { name: "Bobby", password: "1234" },
-//       { name: "Candy", password: "1234" },
-//       { name: "Danny", password: "1234" },
-//       { name: "Eddy", password: "1234" },
-//     ]);
-//   })
-//   .then(() => {
-//     return Todo.bulkCreate([
-//       { title: "Learn HTML", dueDate: "2023-05-19", userId: 1 },
-//       { title: "Learn CSS", dueDate: new Date("2023-05-21"), userId: 1 },
-//       { title: "Learn Javascript", dueDate: new Date("2023-05-25"), userId: 2 },
-//       { title: "Practice Git", dueDate: new Date("2023-05-30"), userId: 3 },
-//       {
-//         title: "Read mySQL Manual",
-//         dueDate: new Date("2023-06-02"),
-//         userId: 3,
-//       },
-//       { title: "Review Docker", dueDate: "2023-06-10", userId: 4 },
-//     ]);
-//   })
-//   .catch((err) => console.log(err.message));
+app.use(express.json())
 
 
-// เริ่ม query
-const  {sequelize, Todo, User} = require('./models')   //index.js  จะหา ไฟลล์ model ให้อัตืโนมัติ
+//-----------------------
 
 
-Todo.findAll()
+app.use('/auth', authRoute)
+app.use('/todos', todoRoute)
+
+
+
+
+
+
+
+
+//-----------------------
+
+app.use(notfound)
+app.use(error)
+
+
+
+
+let port = process.env.PORT || 8080
+app.listen(port, ()=> console.log('SV PORT', port))
