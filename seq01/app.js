@@ -1,120 +1,70 @@
-require('dotenv').config()
-const {Op} = require('sequelize')  // require จาก library ตรง เพื่อจะใช้ Op  > checl in Line 92
-const {User, Todo, sequelize} = require('./models/index')
+require("dotenv").config();
+const { where } = require("sequelize");
+const { User, Todo, sequelize } = require("./models");
+// // Mock data
+// sequelize 
+//   .sync({ force: true })
+//   .then(() => {
+//     return User.bulkCreate([
+//       { name: "Andy", password: "1234" },
+//       { name: "Bobby", password: "1234" },
+//       { name: "Candy", password: "1234" },
+//       { name: "Danny", password: "1234" },
+//       { name: "Eddy", password: "1234" },
+//     ]);
+//   })
+//   .then(() => {
+//     return Todo.bulkCreate([
+//       { title: "Learn HTML", dueDate: "2023-05-19", userId: 1 },
+//       { title: "Learn CSS", dueDate: new Date("2023-05-21"), userId: 1 },
+//       { title: "Learn Javascript", dueDate: new Date("2023-05-25"), userId: 2 },
+//       { title: "Practice Git", dueDate: new Date("2023-05-30"), userId: 3 },
+//       {
+//         title: "Read mySQL Manual",
+//         dueDate: new Date("2023-06-02"),
+//         userId: 3,
+//       },
+//       { title: "Review Docker", dueDate: "2023-06-10", userId: 4 },
+//     ]);
+//   })
+//   .catch((err) => console.log(err.message));
 
-// sequelize.sync({force:true})
 
-//CRUD
-//CREATE
 
-// User.create({name: 'Andy', password: '1234'}).then( rs => {
+// sequelize.sync({force: true})
+
+// Join table User and Todo   กรณีไม่ได้กำหนด  hasMany และ belongsTo  68-76 ใน modesl/index จะ error
+// User.findAll( {
+//     where: {name : 'andy'},
+//     include : Todo         // include คือ Join
+// }).then( rs => {
+//     console.log(JSON.stringify(rs, null, 2))
+//     console.log(rs[0].Todos[1].title)
+// })
+
+
+// Todo.findAll({
+//     include: User
+// }).then( rs => {
 //     console.log(JSON.stringify(rs, null, 2))
 // })
 
-
-
-// Bulk Create
-
-// const mockUser = [
-//           { name: 'Andy', password: '1234'},
-//           { name: 'mike', password: '1234'},
-//           { name: 'bob', password: '1234'},
-//           { name: 'rock', password: '1234'},
-//           { name: 'kaka', password: '1234'},
-//           { name: 'exc', password: '1234'},
-//           { name: 'saw', password: '1234'},
-//           { name: 'cae', password: '1234'}
-// ]
-
-// User.bulkCreate(mockUser).then(rs=> {
-//     console.log(JSON.stringify(rs))
-// })
-
-
-
-//DELETE
-
-// User.destroy({
-//     where : { id:3}
-
-// }).then(rs=> console.log(JSON.stringify(rs, null, 4)))
-
-//UPDATE
-// User.update({password: '4567'},{
-//            where: {name: 'Andy'}
-// }).then(rs=> {
-//     console.log(JSON.stringify(rs, null, 2))
-// })
-
-//---------------------------------
-// SELECT FIND
- ///หาคนแรกคนเดียว
-// User.findOne({  
-//     where: {name: 'Andy'}
-// }).then(rs => console.log(rs.toJSON()))
-
-//หามาทั้งหมด
-// User.findAll({
-//     where: {name: 'Andy'}
-// }).then(rs => console.log(JSON.stringify(rs, null, 2)))
-
-//หาเฉพาะคอลัมที่ต้องการ โดยระบุ attribute
-// User.findAll({
-//     attributes: ['name', 'password', 'createdAt'],
-//     where: {name: 'Andy'}
-// }).then(rs => console.log(JSON.stringify(rs, null, 2)))
-
-// change result โอยเอา array ครอบ // เปลี่ยนชื่อ attiribute
-// User.findAll({
-//     attributes: [['name', 'userName'], 'password', 'createdAt'],
-//     where: {name: 'Andy'}
-// }).then(rs => {
-//     //console.log(JSON.stringify(rs, null, 2))
-//    // console.log(rs[0].dataValues.userName)   
-//    console.log(rs[0].get('userName'))
-// })
-
-// หาทุกอย่าง ยกเว้น password //exclude attribute
-// User.findAll({
-//     attributes: {exclude:'password'}
-// }).then( rs=> console.log(JSON.stringify(rs,null,2)))
-
-
-// count ROWs
-// User.findAll({
-//     attributes:[
-//         [sequelize.fn('COUNT', sequelize.col('id')), 'countAll']
-//     ],
-//     where: {name: 'Andy'}
-// }).then(rs=> console.log(JSON.stringify(rs, null, 2)))
-
-//--------------------------------------------------
-// use => Op Operator
-
-// User.findAll({
-//     where: {
-//         name: {
-//             [Op.like] : 'A%'
-//         }
-//     }
-// }).then(rs => console.log(JSON.stringify(rs, null, 2)))
-
-// find  where with OR
-// User.findAll({
-//     where : {
-//         [Op.or] : [
-//             { id: 12}, 
-//             { name: 'Andy'}
-//         ]
-//     }
-// }).then(rs => console.log(JSON.stringify(rs, null, 2)))
-
-
-//Test validate name must char  Ref (index Line 20)
-
-User.create({
-    name: 'GeGE',
-    password: '1234'
+//  เอาแค่ Title กับ status  ออกมา
+User.findAll({
+    where : { id : 3},
+    attributes: ['name'],
+    include : {
+        model : Todo,
+        attributes: ['title', 'status']
+    }
+}).then(rs=> {
+    //console.log(JSON.stringify(rs,null,2))
+  //  [ "title": "Practice Git","status": false]
+    // console.log(rs[0].Todos[0].title) // เอาแค่ title ตัวที่ 0 มา [Practice Git]
+    console.log(JSON.stringify(rs[0].Todos, null, 2))
+    let output = rs[0].Todos.map(el => el.title)
+    console.log(output)
 })
-.then(rs =>  console.log(JSON.stringify(rs, null, 2)))
-.catch((err) => console.log(err.message));
+
+
+

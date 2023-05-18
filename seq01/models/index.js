@@ -42,7 +42,7 @@ const Todo = sequelize.define('Todo',{
     //     allowNull: false,
     //     autoIncrement: true
     // },
-    user_id : {
+    userId : {
         type: DataTypes.INTEGER,
         allowNull: false        
     },
@@ -50,7 +50,7 @@ const Todo = sequelize.define('Todo',{
         type: DataTypes.STRING(100),
         allowNull: false
     },
-    due_date: {
+    dueDate: {
     type: DataTypes.DATEONLY,
     allowNull:false
     },
@@ -65,9 +65,22 @@ status : {
         freezeTableName: true 
     })
 
+// บอกให้ sql รู้ ว่า field ไหน เปน FK  // Default option จะเปน cadcase  // หลังจาก update ข้อมูล ต้องไป sync ไห่่ม่  (sequelize.sync({alter:true}))
+    User.hasMany(Todo,{
+        foreignKey: 'userId',
+        onDelete: 'Restrict',
+        onUpdate: 'Restrict' 
+    })
+    
+    Todo.belongsTo(User, {
+        foreignKey: 'userId',
+        onDelete: 'Restrict',
+        onUpdate: 'Restrict' 
+    })
+
 
 //sequelize.sync({force:true})
-
+// sequelize.sync({alter:true})
 //    User.sync({force:true})
 //    Todo.sync({force:true})
 
