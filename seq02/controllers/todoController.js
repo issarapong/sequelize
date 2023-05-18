@@ -78,18 +78,19 @@ exports.createTodo = (req, res, next) => {
     }
     
 
-// exports.createProduct = (req, res, next) => {
-//     // const data = req.body
-//     // console.log(data)
-//     // res.send('createproduct')
-//     Products.create(req.body).then(rs=> {
-//         console.log(rs)
-//       //  res.json(rs)
-//         if(rs.affectedRows>=1) {
-//             res.status(201).json(rs)   //Create status
-//         } 
-//         throw new Error( 'cant create')
-//     }).catch(next)
-// }
-
+// /user?name=Andy  หาโดย user
+exports.getTodoByUser = (req, res, next) =>
+{
+    const {name} = req.query
+ User.findAll({
+     where : { name : name},
+  attributes: ['name'],
+     include : {
+         model : Todo,
+        attributes: ['title', 'status'],
+     }
+    }).then(rs => {
+        res.json(rs)
+    }).catch(next)
+}
 
