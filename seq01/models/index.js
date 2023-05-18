@@ -71,12 +71,12 @@ const Todo = sequelize.define('Todo',{
     type: DataTypes.DATEONLY,
     allowNull:false
     },
- // Virtuals fields   // ไม่ต้อง sync  // ตัวอย่างเรียกใช้  79 -80
+ // Virtuals fields  จะเป็น fild ที่ไม่มีอยู๋จริงใน Table // ไม่ต้อง sync  // ตัวอย่างเรียกใช้  79 -80
      inSevenDay: {
         type: DataTypes.VIRTUAL,
         get() {
             let sevenDay = new Date(this.dueDate);
-            sevenDay.setDate(sevenDay.getDate()+7)
+            sevenDay.setDate(sevenDay.getDate()+7)  // ระดับเดือน ก็ setMounth
             return sevenDay
         }
      },
