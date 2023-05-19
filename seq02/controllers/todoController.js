@@ -1,4 +1,4 @@
-const {Todo, User} = require('../models')
+const {Todo, User, sequelize} = require('../models')
 
 //find aLl
 exports.getAllTodos = (req, res, next ) => {
@@ -116,3 +116,19 @@ exports.getTodoByUser = (req, res, next) => {
     }).catch(next)
 }
 
+
+//summaryTodo
+
+
+exports.summaryTodo = (req, res, next) => {
+    User.findAll({
+        attributes: ['name', 'password'],
+        include: {
+            model : Todo,
+            attributes: [ [sequelize.fn('count', sequelize.col('title')), 'tasks' ]],
+        },
+        group: 'user_id' 
+    }).then(rs => {
+        res.json(rs)
+    }).catch(next)
+}
