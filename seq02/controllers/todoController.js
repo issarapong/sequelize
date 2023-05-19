@@ -79,16 +79,38 @@ exports.createTodo = (req, res, next) => {
     
 
 // /user?name=Andy  หาโดย user
-exports.getTodoByUser = (req, res, next) =>
-{
+// exports.getTodoByUser = (req, res, next) =>
+// {
+//     const {name} = req.query
+//  User.findAll({
+//      where : { name : name},
+//   attributes: ['name'],
+//      include : {
+//          model : Todo,
+//         attributes: ['title', 'status'],
+//      }
+//     }).then(rs => {
+//         res.json(rs)
+//     }).catch(next)
+// }
+
+
+// แสดง todolist จากชื่อ user
+// /user?name =Andy
+
+
+// แสดง todolist จากชื่อ user
+//   /user?name=Andy
+// By teacher
+exports.getTodoByUser = (req, res, next) => {
     const {name} = req.query
- User.findAll({
-     where : { name : name},
-  attributes: ['name'],
-     include : {
-         model : Todo,
-        attributes: ['title', 'status'],
-     }
+    User.findAll({
+        attributes: {exclude: 'password'},
+        where : { name : name},
+        include : {
+            model : Todo,
+            attributes: ['title', 'dueDate', 'status']
+        }
     }).then(rs => {
         res.json(rs)
     }).catch(next)

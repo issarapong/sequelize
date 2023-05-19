@@ -1,3 +1,5 @@
+
+
 npm i dotenv express mysql2 sequelize
 
 app.js
@@ -19,3 +21,4 @@ sequelize init:models
 ```
 /models/index.js
 ```
+
